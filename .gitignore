@@ -1,0 +1,14 @@
+# Node / Local Dev
+node_modules/
+server.js
+package.json
+
+# Vercel & IDE
+.vercel/
+.idea/
+.vscode/
+
+# System / Logs
+.DS_Store
+Thumbs.db
+*.log
