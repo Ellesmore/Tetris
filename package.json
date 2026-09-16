@@ -1,0 +1,13 @@
+{
+  "name": "tetris-neon",
+  "version": "1.0.0",
+  "description": "Тетрис — классическая игра в неоновом стиле",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

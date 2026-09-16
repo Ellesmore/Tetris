@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="Тетрис — классическая игра в современном неоновом стиле. Выбери героя, уровень сложности и собирай линии!">
+  <title>Тетрис — Неоновый</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- ===== PARTICLES BACKGROUND ===== -->
+  <canvas id="particles-bg"></canvas>
+
+  <!-- ===== SCREEN: Player Select ===== -->
+  <section id="screen-player" class="screen active">
+    <div class="screen-content">
+      <h1 class="title glitch" data-text="ТЕТРИС">ТЕТРИС</h1>
+      <p class="subtitle">Выбери своего героя</p>
+      <div id="player-grid" class="player-grid">
+        <!-- Cards injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SCREEN: Difficulty Select ===== -->
+  <section id="screen-difficulty" class="screen">
+    <div class="screen-content">
+      <button class="back-btn" id="btn-back-player" aria-label="Назад">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+      </button>
+      <h1 class="title">Выбери сложность</h1>
+      <p class="subtitle" id="selected-player-label"></p>
+      <div id="difficulty-grid" class="difficulty-grid">
+        <!-- Cards injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SCREEN: Game ===== -->
+  <section id="screen-game" class="screen">
+    <div class="game-layout">
+      <!-- Left panel: Score & info -->
+      <div class="game-panel game-panel-left">
+        <div class="panel-block">
+          <span class="panel-label">Очки</span>
+          <span class="panel-value" id="score-display">0</span>
+        </div>
+        <div class="panel-block">
+          <span class="panel-label">Линии</span>
+          <span class="panel-value" id="lines-display">0</span>
+        </div>
+        <div class="panel-block">
+          <span class="panel-label">Уровень</span>
+          <span class="panel-value" id="level-display">1</span>
+        </div>
+      </div>
+
+      <!-- Center: Canvas -->
+      <div class="game-board-wrapper">
+        <canvas id="game-canvas"></canvas>
+      </div>
+
+      <!-- Right panel: Next piece -->
+      <div class="game-panel game-panel-right">
+        <div class="panel-block">
+          <span class="panel-label">Следующая</span>
+          <canvas id="next-canvas" width="120" height="120"></canvas>
+        </div>
+        <button class="btn-icon" id="btn-pause" aria-label="Пауза">
+          <svg id="pause-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+          <svg id="play-icon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" style="display:none"><polygon points="5,3 19,12 5,21"/></svg>
+        </button>
+        <button class="btn-icon btn-menu-small" id="btn-menu-game" aria-label="Меню">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile controls -->
+    <div class="mobile-controls" id="mobile-controls">
+      <div class="controls-row">
+        <button class="ctrl-btn" id="ctrl-left" aria-label="Влево">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <button class="ctrl-btn ctrl-down" id="ctrl-down" aria-label="Вниз">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M5 9l7 7 7-7"/></svg>
+        </button>
+        <button class="ctrl-btn" id="ctrl-right" aria-label="Вправо">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+      <div class="controls-row controls-row-actions">
+        <button class="ctrl-btn ctrl-action" id="ctrl-rotate" aria-label="Повернуть">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+        </button>
+        <button class="ctrl-btn ctrl-action ctrl-drop" id="ctrl-drop" aria-label="Бросить">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2v14m-6-6l6 6 6-6"/><line x1="6" y1="22" x2="18" y2="22" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SCREEN: Game Over ===== -->
+  <section id="screen-gameover" class="screen">
+    <div class="screen-content gameover-content">
+      <h1 class="title gameover-title">GAME OVER</h1>
+      <div class="gameover-stats">
+        <div class="stat-item">
+          <span class="stat-label">Очки</span>
+          <span class="stat-value" id="final-score">0</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Линии</span>
+          <span class="stat-value" id="final-lines">0</span>
+        </div>
+      </div>
+      <div class="gameover-buttons">
+        <button class="btn btn-primary" id="btn-retry">Играть снова</button>
+        <button class="btn btn-secondary" id="btn-main-menu">В меню</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SCREEN: Pause overlay ===== -->
+  <div id="pause-overlay" class="pause-overlay hidden">
+    <div class="pause-box">
+      <h2>Пауза</h2>
+      <button class="btn btn-primary" id="btn-resume">Продолжить</button>
+      <button class="btn btn-secondary" id="btn-quit">В меню</button>
+    </div>
+  </div>
+
+  <script src="js/app.js" type="module"></script>
+</body>
+</html>
