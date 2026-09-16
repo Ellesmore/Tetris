@@ -1,21 +1,5 @@
 {
-  "framework": null,
-  "installCommand": "true",
-  "buildCommand": "true",
-  "outputDirectory": ".",
-  "trailingSlash": false,
-  "headers": [
-    {
-      "source": "/css/(.*)",
-      "headers": [{ "key": "Content-Type", "value": "text/css; charset=utf-8" }]
-    },
-    {
-      "source": "/js/(.*)",
-      "headers": [{ "key": "Content-Type", "value": "application/javascript; charset=utf-8" }]
-    }
-  ],
-  "routes": [
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/index.html" }
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
